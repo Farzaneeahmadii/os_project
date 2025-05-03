@@ -73,9 +73,46 @@ runcmd(struct cmd *cmd)
     panic("runcmd");
 
   case EXEC:
+    // ecmd = (struct execcmd*)cmd;
+    // if(ecmd->argv[0] == 0)
+    //   exit(1);
+    // exec(ecmd->argv[0], ecmd->argv);
+    // fprintf(2, "exec %s failed\n", ecmd->argv[0]);
+    // break;
+
     ecmd = (struct execcmd*)cmd;
     if(ecmd->argv[0] == 0)
       exit(1);
+
+    // اضافه کردن دستور جدید
+    if(strcmp(ecmd->argv[0], "!") == 0) {
+      if(ecmd->argv[1] == 0) {
+        fprintf(2, "Usage: ! <message>\n");
+        exit(1);
+      }
+      
+      // بررسی طول پیام
+      if(strlen(ecmd->argv[1]) > 512) {
+        fprintf(2, "Message too long\n");
+        exit(1);
+      }
+      
+      char *msg = ecmd->argv[1];
+      int found = 0;
+      for (int i = 0; msg[i] != '\0' && !found; i++) {
+        if (msg[i] == 'o' && msg[i+1] == 's') {
+          found = 1;
+        }
+      }
+
+      if(found) {
+        printf("\033[34m%s\033[0m\n", msg); // رنگ آبی
+      } else {
+        printf("%s\n", msg);
+      }
+      exit(0);
+    }
+
     exec(ecmd->argv[0], ecmd->argv);
     fprintf(2, "exec %s failed\n", ecmd->argv[0]);
     break;
