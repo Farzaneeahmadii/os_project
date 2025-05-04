@@ -73,13 +73,6 @@ runcmd(struct cmd *cmd)
     panic("runcmd");
 
   case EXEC:
-    // ecmd = (struct execcmd*)cmd;
-    // if(ecmd->argv[0] == 0)
-    //   exit(1);
-    // exec(ecmd->argv[0], ecmd->argv);
-    // fprintf(2, "exec %s failed\n", ecmd->argv[0]);
-    // break;
-
     ecmd = (struct execcmd*)cmd;
     if(ecmd->argv[0] == 0)
       exit(1);
@@ -99,14 +92,39 @@ runcmd(struct cmd *cmd)
       
       char *msg = ecmd->argv[1];
       int found = 0;
+      int start = -1;
       for (int i = 0; msg[i] != '\0' && !found; i++) {
         if (msg[i] == 'o' && msg[i+1] == 's') {
           found = 1;
+          start = i;
         }
       }
 
       if(found) {
-        printf("\033[34m%s\033[0m\n", msg); // رنگ آبی
+        char *msg4 = ecmd->argv[1];
+        char *msg3 = ecmd->argv[1];
+        char first[start-1];
+        for (int j = 0 ; j < start ; j++)
+          first[j] = msg[j];
+
+        printf("%s", first);
+      
+        char msg2[2];
+        for (int j = 0 ; j < 2 ; j++)
+          msg2[j] = msg4[start + j];
+
+        printf("\033[34m%s\033[0m", msg2); // رنگ آبی
+        
+        int counter = 0 ;
+        for ( int k = start + 2 ; msg[k] != '\0'; k++)
+          counter+=1;
+
+        char second[counter];
+        for (int j = 0 ; j < counter ; j++)
+          second[j] = msg3[start + j + 2];
+
+        printf("%s\n", second);
+      
       } else {
         printf("%s\n", msg);
       }
