@@ -98,23 +98,22 @@ runcmd(struct cmd *cmd)
       }
       
       char *msg = ecmd->argv[1];
-      int found = 0;
-      for (int i = 0; msg[i] != '\0' && !found; i++) {
+      for (int i = 0; msg[i] != '\0'; i++) {
         if (msg[i] == 'o' && msg[i+1] == 's') {
-          found = 1;
+          write(1, "\033[34m", 5);    // شروع رنگ آبی
+          write(1, "os", 2);          
+          write(1, "\033[0m", 4);     // پایان رنگ
+          i++; 
+        } else {
+          write(1, &msg[i], 1);       // چاپ تک‌تک کاراکترهای دیگر
         }
       }
-
-      if(found) {
-        printf("\033[34m%s\033[0m\n", msg); // رنگ آبی
-      } else {
-        printf("%s\n", msg);
-      }
+      write(1, "\n", 1);        // بره خط بعد
       exit(0);
     }
 
     exec(ecmd->argv[0], ecmd->argv);
-    fprintf(2, "exec %s failed\n", ecmd->argv[0]);
+    fprintf(2, "exec %s failed\n", ecmd->argv[0]);     // اگه ورودی ر. نتونست بخونه
     break;
 
   case REDIR:
@@ -171,7 +170,7 @@ runcmd(struct cmd *cmd)
 int
 getcmd(char *buf, int nbuf)
 {
-  write(2, "$ soroosh-feri", 18);
+  write(2, "$ soroosh-feri", 18); // query 1
   memset(buf, 0, nbuf);
   gets(buf, nbuf);
   if(buf[0] == 0) // EOF
