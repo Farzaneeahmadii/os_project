@@ -3,6 +3,8 @@
 #include "defs.h"
 #include "custom_logger.h"
 
+
+// query 2
 void log_message(int level, const char *message) {
   switch(level) {
     case LOG_LEVEL_INFO:

@@ -2,6 +2,6 @@
 #include "user/user.h"
 
 int main() {
-  trigger();
+  sys_trigger();
   exit(0);
 }

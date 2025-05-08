@@ -91,48 +91,22 @@ runcmd(struct cmd *cmd)
       }
       
       char *msg = ecmd->argv[1];
-      int found = 0;
-      int start = -1;
-      for (int i = 0; msg[i] != '\0' && !found; i++) {
+      for (int i = 0; msg[i] != '\0'; i++) {
         if (msg[i] == 'o' && msg[i+1] == 's') {
-          found = 1;
-          start = i;
+          write(1, "\033[34m", 5);    // شروع رنگ آبی
+          write(1, "os", 2);          
+          write(1, "\033[0m", 4);     // پایان رنگ
+          i++; 
+        } else {
+          write(1, &msg[i], 1);       // چاپ تک‌تک کاراکترهای دیگر
         }
       }
-
-      if(found) {
-        char *msg4 = ecmd->argv[1];
-        char *msg3 = ecmd->argv[1];
-        char first[start-1];
-        for (int j = 0 ; j < start ; j++)
-          first[j] = msg[j];
-
-        printf("%s", first);
-      
-        char msg2[2];
-        for (int j = 0 ; j < 2 ; j++)
-          msg2[j] = msg4[start + j];
-
-        printf("\033[34m%s\033[0m", msg2); // رنگ آبی
-        
-        int counter = 0 ;
-        for ( int k = start + 2 ; msg[k] != '\0'; k++)
-          counter+=1;
-
-        char second[counter];
-        for (int j = 0 ; j < counter ; j++)
-          second[j] = msg3[start + j + 2];
-
-        printf("%s\n", second);
-      
-      } else {
-        printf("%s\n", msg);
-      }
+      write(1, "\n", 1);        // بره خط بعد
       exit(0);
     }
 
     exec(ecmd->argv[0], ecmd->argv);
-    fprintf(2, "exec %s failed\n", ecmd->argv[0]);
+    fprintf(2, "exec %s failed\n", ecmd->argv[0]);     // اگه ورودی ر. نتونست بخونه
     break;
 
   case REDIR:
@@ -189,7 +163,7 @@ runcmd(struct cmd *cmd)
 int
 getcmd(char *buf, int nbuf)
 {
-  write(2, "$ soroosh-feri", 18);
+  write(2, "$ soroosh-feri", 18); // query 1
   memset(buf, 0, nbuf);
   gets(buf, nbuf);
   if(buf[0] == 0) // EOF
