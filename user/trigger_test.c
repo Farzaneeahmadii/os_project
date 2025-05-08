@@ -1,7 +1,9 @@
 #include "kernel/types.h"
 #include "user/user.h"
 
-int main() {
-  sys_trigger();
+int
+main(void)
+{
+  trigger();
   exit(0);
 }

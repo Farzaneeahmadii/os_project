@@ -1,5 +1,3 @@
-// Shell.
-
 #include "kernel/types.h"
 #include "user/user.h"
 #include "kernel/fcntl.h"
@@ -73,13 +71,6 @@ runcmd(struct cmd *cmd)
     panic("runcmd");
 
   case EXEC:
-    // ecmd = (struct execcmd*)cmd;
-    // if(ecmd->argv[0] == 0)
-    //   exit(1);
-    // exec(ecmd->argv[0], ecmd->argv);
-    // fprintf(2, "exec %s failed\n", ecmd->argv[0]);
-    // break;
-
     ecmd = (struct execcmd*)cmd;
     if(ecmd->argv[0] == 0)
       exit(1);
